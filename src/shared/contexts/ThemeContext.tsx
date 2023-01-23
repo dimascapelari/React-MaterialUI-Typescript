@@ -22,9 +22,6 @@ export const useAppThemeContext = () => {
   return useContext(ThemeContext);
 };
 
-// export const AppThemeProvider = ({ children }: PropsWithChildren<{}>) => {
-//     return(<>{children}</>)
-
 export const AppThemeProvider = ({ children }: PropsWithChildren<{}>) => {
   const [themeName, setThemeName] = useState<"light" | "dark">("light");
   const toggleTheme = useCallback(() => {
