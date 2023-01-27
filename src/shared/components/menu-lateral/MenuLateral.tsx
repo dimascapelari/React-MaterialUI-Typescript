@@ -1,5 +1,6 @@
 import ListItemButton from "@mui/material/ListItemButton";
 import List from "@mui/material/List";
+import { PropsWithChildren } from "react";
 import {
   Avatar,
   Divider,
@@ -11,8 +12,40 @@ import {
   useTheme,
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { PropsWithChildren } from "react";
 import { useAppDrawerContext } from "../../contexts";
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
+
+interface IListItemLinkPropos {
+  to: string;
+  label: string;
+  icon: string;
+  onClick: () => void;
+}
+
+const ListItemLink: React.FC<IListItemLinkPropos> = ({
+  to,
+  icon,
+  label,
+  onClick,
+}) => {
+  const navigate = useNavigate();
+  const resolvedPath = useResolvedPath(to);
+  const match = useMatch({ path: resolvedPath.pathname, end: false });
+
+  const handleClick = () => {
+    navigate(to);
+    onClick();
+  };
+
+  return (
+    <ListItemButton selected={!!match} onClick={handleClick}>
+      <ListItemIcon>
+        <Icon>{icon}</Icon>
+      </ListItemIcon>
+      <ListItemText primary={label} />
+    </ListItemButton>
+  );
+};
 
 export const MenuLateral = ({ children }: PropsWithChildren<{}>) => {
   const theme = useTheme();
@@ -48,12 +81,18 @@ export const MenuLateral = ({ children }: PropsWithChildren<{}>) => {
           <Divider />
           <Box flex={1}>
             <List component="nav">
-              <ListItemButton>
-                <ListItemIcon>
-                  <Icon>home</Icon>
-                </ListItemIcon>
-                <ListItemText primary="Página inicial" />
-              </ListItemButton>
+              <ListItemLink
+                icon="home"
+                to="/pagina-inicial"
+                label="Página inicial"
+                onClick={toggleDrawerOpen}
+              />
+              <ListItemLink
+                icon="star"
+                to="/pagina-inicial2"
+                label="Página inicial2"
+                onClick={toggleDrawerOpen}
+              />
             </List>
           </Box>
         </Box>
